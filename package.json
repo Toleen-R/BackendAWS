@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "- npm init -y\r - npm i express\r - npm i dotenv\r - npm i pg",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "npm install && tsc",
+    "start:prod": "npm run build && node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "vercel-build": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -48,5 +53,8 @@
     "prisma": "^5.20.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }

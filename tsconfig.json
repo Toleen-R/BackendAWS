@@ -1,13 +1,43 @@
+// {
+//   "compilerOptions": {
+//     "target": "es2020",
+//     "module": "NodeNext",
+//     "outDir": "./dist",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "skipLibCheck": true,
+//     "rootdir": ".",
+//     "allowJs": true
+//   },
+//   "exclude": ["node_modules/"],
+//   "include": ["src/**/*.ts", "api/**/*"],
+//   "ts-node": {
+//     "esm": true,
+//     "experimentalSpecifierResolution": "node"
+//   }
+// }
+
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "NodeNext",
-    "outDir": "./dist",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
+    "outDir": "./dist",
+    "rootDir": ".",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*"]
+    }
   },
-  "exclude": ["node_modules/"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*", "api/**/*"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }
