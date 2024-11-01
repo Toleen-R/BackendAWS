@@ -1,4 +1,4 @@
-import { prisma } from "../prismaclient/prismaclient";
+import { prisma } from "../prismaclient/prismaclient.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 import passport from "passport";

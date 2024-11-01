@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { prisma } from "../prismaclient/prismaclient";
-import { userSchema } from "../schema/user-schema";
+import { prisma } from "../prismaclient/prismaclient.js";
+import { userSchema } from "../schema/user-schema.js";
 import bcrypt from "bcrypt";
 export const router = Router();
 router.get("/", async (req, res) => {

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-import "../authStrategies/githubStrategy";
-import "../authStrategies/localStrategy";
+import "../authStrategies/githubStrategy.js";
+import "../authStrategies/localStrategy.js";
 const app = Router();
 app.get("/", passport.authenticate("github"));
 app.get("/callback", passport.authenticate("github", { failureRedirect: "/" }), function (req, res) {
@@ -16,12 +16,10 @@ app.get("/profile", (req, res) => {
     res.json(req.user);
 });
 // localStrategy
-app.post("/login", passport.authenticate('local'), (req, res) => {
+app.post("/login", passport.authenticate("local"), (req, res) => {
     const { user } = req;
     if (!user) {
-        return res
-            .status(401)
-            .json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Invalid email or password" });
     }
     try {
         // Dubbel error-handling?? :-)

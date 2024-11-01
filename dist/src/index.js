@@ -3,11 +3,11 @@ import passport from "passport";
 import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
-import "./authStrategies/localStrategy";
+import "./authStrategies/localStrategy.js";
 //routes
-import { campaignRoutes } from "./routes/campaign";
-import authRouter from "./routes/auth";
-import { router as userRouter } from "./routes/user";
+import { campaignRoutes } from "./routes/campaign.js";
+import authRouter from "./routes/auth.js";
+import { router as userRouter } from "./routes/user.js";
 const app = express();
 const allowedOrigins = process.env.NODE_ENV === "production"
     ? ["https://main.d5od8j2t64g0j.amplifyapp.com/"]

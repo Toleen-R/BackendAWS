@@ -1,25 +1,25 @@
-import { prisma } from '../prismaclient/prismaclient';
-import { Strategy as LocalStrategy } from 'passport-local';
-import bcrypt from 'bcrypt';
+import { prisma } from "../prismaclient/prismaclient.js";
+import { Strategy as LocalStrategy } from "passport-local";
+import bcrypt from "bcrypt";
 import passport from "passport";
 passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
+    usernameField: "email",
+    passwordField: "password",
 }, async function (email, password, done) {
     const user = await prisma.user.findUnique({
-        where: { email: email }
+        where: { email: email },
     });
     if (!user) {
-        console.log('no user found');
-        return done(null, false, { message: 'Incorrect username.' });
+        console.log("no user found");
+        return done(null, false, { message: "Incorrect username." });
     }
     bcrypt.compare(password, user.password, function (err, isMatch) {
         if (err) {
             return done(err);
         }
         if (!isMatch) {
-            console.log('wrong password');
-            return done(null, false, { message: 'Incorrect password.' });
+            console.log("wrong password");
+            return done(null, false, { message: "Incorrect password." });
         }
     });
     return done(null, user);

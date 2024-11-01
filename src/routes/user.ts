@@ -1,7 +1,7 @@
 import { Router, Request } from "express";
-import { RequestUser } from "../types/types";
-import { prisma } from "../prismaclient/prismaclient";
-import { userSchema } from "../schema/user-schema";
+import { RequestUser } from "../types/types.js";
+import { prisma } from "../prismaclient/prismaclient.js";
+import { userSchema } from "../schema/user-schema.js";
 import bcrypt from "bcrypt";
 
 export const router = Router();

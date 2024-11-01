@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-import "../authStrategies/githubStrategy";
-import "../authStrategies/localStrategy";
+import "../authStrategies/githubStrategy.js";
+import "../authStrategies/localStrategy.js";
 import { Request, Response, NextFunction } from "express";
 
 const app = Router();
@@ -26,29 +26,33 @@ app.get("/profile", (req: Request, res: Response) => {
 });
 
 // localStrategy
-app.post("/login", passport.authenticate('local'), (req: Request, res: Response) => {
-  const {user} = req;
-  
-  if (!user){
-    return res
-        .status(401)
-        .json({ message: "Invalid email or password" });
-  }
-  try {
-    // Dubbel error-handling?? :-)
-    req.logIn(user, (err) => {
-        if (err) return res.status(500).json({ message: "Internal server error" });
-        else res.json({
+app.post(
+  "/login",
+  passport.authenticate("local"),
+  (req: Request, res: Response) => {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    try {
+      // Dubbel error-handling?? :-)
+      req.logIn(user, (err) => {
+        if (err)
+          return res.status(500).json({ message: "Internal server error" });
+        else
+          res.json({
             message: "Logged in successfully",
             user: { id: user.id, email: user.email, name: user.name },
             redirectUrl: "/campaigns",
-        });
-    });
-  } catch(err){
-    console.log(err)
-    res.send(err)
+          });
+      });
+    } catch (err) {
+      console.log(err);
+      res.send(err);
+    }
   }
-});
+);
 
 app.get("/profile", (req, res) => {
   if (!req.isAuthenticated()) {
