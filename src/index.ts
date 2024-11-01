@@ -3,7 +3,7 @@ import passport from "passport";
 import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
-import "./authStrategies/localStrategy";
+import "./authStrategies/localStrategy.js";
 
 //routes
 import { campaignRoutes } from "./routes/campaign";
