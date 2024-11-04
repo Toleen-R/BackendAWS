@@ -14,7 +14,7 @@ const app = express();
 
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://main.d5od8j2t64g0j.amplifyapp.com/"]
+    ? ["https://main.d3i4nshersmiyz.amplifyapp.com/"]
     : ["http://localhost:5173"];
 
 const corsOptions = {
