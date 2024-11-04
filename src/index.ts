@@ -65,6 +65,10 @@ app.use("/campaign", campaignRoutes);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 
+app.get("/", (req, res) => {
+  res.send("hello from backend");
+});
+
 // const SERVER_PORT = process.env.SERVER_PORT || 1337;
 
 // app.listen(SERVER_PORT, () => {
