@@ -27,12 +27,31 @@ app.use(cors(corsOptions));
 
 dotenv.config();
 
-// gitHubStrategy
+// // gitHubStrategy
+// app.use(
+//   session({
+//     secret: "hemligt",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie:{
+//       secure:
+//     }
+//   })
+// );
+
+app.set("trust proxy", 1);
+// Configure session and passport
+app.use(express.json());
 app.use(
   session({
-    secret: "hemligt",
+    secret: process.env.SESSION_SECRET || "helloWorld",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    proxy: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
   })
 );
 
