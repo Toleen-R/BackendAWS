@@ -124,5 +124,8 @@ RUN chown -R node:node /app/node_modules
 # Byt till användaren "node"
 USER node
 
+EXPOSE 8000 
+
+
 # Starta applikationen
 CMD ["npm", "run", "dev"]

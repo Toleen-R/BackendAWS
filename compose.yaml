@@ -56,7 +56,7 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 5433:5432
+      - 8000:5432
     # depends_on:
     #   - db
 
