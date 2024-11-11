@@ -13,8 +13,8 @@ services:
       context: .
     environment:
       NODE_ENV: production
-      GITHUB_CLIENT_ID: Ov23limMArVtCsHxmIdQ
-      GITHUB_CLIEND_SERCRET: a2b5996cec5374b3c5a45984e03fe697b1e55653
+      GITHUB_CLIENT_ID: 
+      GITHUB_CLIEND_SERCRET: 
     ports:
       - 3000:3000
 
