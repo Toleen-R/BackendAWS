@@ -10,6 +10,8 @@ import { campaignRoutes } from "./routes/campaign.js";
 import authRouter from "./routes/auth.js";
 import { router as userRouter } from "./routes/user.js";
 
+import { Pool } from "pg";
+
 const app = express();
 
 const allowedOrigins =
@@ -66,7 +68,7 @@ app.use("/users", userRouter);
 app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
-  res.send("hello from backend");
+  res.send("Hello from Backend  😊 ");
 });
 
 // const SERVER_PORT = process.env.SERVER_PORT || 1337;
@@ -77,7 +79,9 @@ app.get("/", (req, res) => {
 
 if (process.env.VERCEL !== "1") {
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, () =>
+    console.log(`Server running on port ${PORT}, Link => http://localhost:3000`)
+  );
 }
 
 export default app;
