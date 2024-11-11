@@ -1,6 +1,6 @@
 import { prisma } from "../prismaclient/prismaclient.js";
 import { Strategy as LocalStrategy } from "passport-local";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import passport from "passport";
 passport.use(new LocalStrategy({
     usernameField: "email",

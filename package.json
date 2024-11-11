@@ -5,11 +5,11 @@
   "main": "api/index.js",
   "type": "module",
   "scripts": {
-    "start": "node dist/src/index.js",
+    "start": "npx prisma generate && npm run build && npx tsx src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon ./src/index.ts",
     "build": "npm install && tsc",
-    "start:prod": "npm run build && node dist/index.js",
+    "start:prod": "npm run build && nodemon dist/src/index.js",
     "prisma:generate": "prisma generate",
     "vercel-build": "prisma generate"
   },
@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@joi/date": "^2.1.1",
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.22.0",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/cookie-parser": "^1.4.7",
     "@types/express-session": "^1.18.0",
@@ -51,7 +51,7 @@
     "@types/passport-local": "^1.0.34",
     "@types/pg": "^8.11.6",
     "nodemon": "^3.1.4",
-    "prisma": "^5.20.0",
+    "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
