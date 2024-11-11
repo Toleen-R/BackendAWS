@@ -10,7 +10,7 @@ import authRouter from "./routes/auth.js";
 import { router as userRouter } from "./routes/user.js";
 const app = express();
 const allowedOrigins = process.env.NODE_ENV === "production"
-    ? ["https://main.d5od8j2t64g0j.amplifyapp.com/"]
+    ? ["https://main.d3i4nshersmiyz.amplifyapp.com/"]
     : ["http://localhost:5173"];
 const corsOptions = {
     origin: allowedOrigins,
@@ -20,11 +20,29 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 dotenv.config();
-// gitHubStrategy
+// // gitHubStrategy
+// app.use(
+//   session({
+//     secret: "hemligt",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie:{
+//       secure:
+//     }
+//   })
+// );
+app.set("trust proxy", 1);
+// Configure session and passport
+app.use(express.json());
 app.use(session({
-    secret: "hemligt",
+    secret: process.env.SESSION_SECRET || "helloWorld",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    proxy: true,
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -34,6 +52,9 @@ app.use(express.json());
 app.use("/campaign", campaignRoutes);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.get("/", (req, res) => {
+    res.send("hello from backend");
+});
 // const SERVER_PORT = process.env.SERVER_PORT || 1337;
 // app.listen(SERVER_PORT, () => {
 //   console.log("Server started on: " + SERVER_PORT);

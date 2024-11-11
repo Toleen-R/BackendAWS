@@ -7,14 +7,14 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
-services:
-  server:
-    build:
-      context: .
-    environment:
-      NODE_ENV: production
-    ports:
-      - 5173:5173
+# services:
+#   server:
+#     build:
+#       context: .
+#     environment:
+#       NODE_ENV: production
+#     ports:
+#       - 5173:5173
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
@@ -49,3 +49,35 @@ services:
 #   db-password:
 #     file: db/password.txt
 
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5433:5432
+    # depends_on:
+    #   - db
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: docker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: BajsKorv1993
+    # volumes:
+    #   - db-data:/var/lib/postgresql/data
+    # secrets:
+    #   - db-password
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+# volumes:
+#   db-data:
+# secrets:
+#   db-password:
+#     file: src/db/password.txt
