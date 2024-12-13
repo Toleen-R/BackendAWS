@@ -1,87 +1,90 @@
-import express from "express";
-import passport from "passport";
-import session from "express-session";
-import dotenv from "dotenv";
-import cors from "cors";
-import "./authStrategies/localStrategy.js";
+// Importerar nödvändiga moduler
+import express from "express"; // Express används för att skapa och konfigurera servern.
+import passport from "passport"; // Passport används för autentisering.
+import session from "express-session"; // Hanterar sessionslagring.
+import dotenv from "dotenv"; // Laddar miljövariabler från en .env-fil.
+import cors from "cors"; // Hanterar CORS (Cross-Origin Resource Sharing) för att tillåta API-åtkomst från olika ursprung.
+import "./authStrategies/localStrategy.js"; // Laddar lokal autentiseringsstrategi (ex. Passport Local Strategy).
 
-//routes
-import { campaignRoutes } from "./routes/campaign.js";
-import authRouter from "./routes/auth.js";
-import { router as userRouter } from "./routes/user.js";
+// Importerar routrar för specifika funktioner
+import { campaignRoutes } from "./routes/campaign.js"; // Hanterar endpoints för kampanjer.
+import authRouter from "./routes/auth.js"; // Hanterar autentiseringsrelaterade endpoints.
+import { router as userRouter } from "./routes/user.js"; // Hanterar användarrelaterade endpoints.
 
-import { Pool } from "pg";
+import { Pool } from "pg"; // Pool används för att hantera databasanslutningar.
 
+// Skapar en instans av Express-applikationen
 const app = express();
 
+// Definierar tillåtna ursprung för CORS beroende på miljön (produktion eller utveckling)
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://main.d3i4nshersmiyz.amplifyapp.com/"]
-    : ["http://localhost:5173"];
+    ? ["https://main.d3i4nshersmiyz.amplifyapp.com/"] // Tillåtet ursprung i produktionsmiljö.
+    : ["http://localhost:5173"]; // Tillåtet ursprung i utvecklingsmiljö.
 
+// Konfigurerar CORS-inställningar
 const corsOptions = {
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: allowedOrigins, // Tillåtna ursprung.
+  credentials: true, // Tillåt användning av cookies.
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Tillåtna HTTP-metoder.
+  allowedHeaders: ["Content-Type", "Authorization"], // Tillåtna HTTP-rubriker.
 };
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // Aktiverar CORS i Express.
 
+// Laddar miljövariabler från .env-filen
 dotenv.config();
 
-// // gitHubStrategy
+// // Exempel för en GitHub-strategi (kommenterad just nu)
+// // Konfigurerar sessionshantering
 // app.use(
 //   session({
-//     secret: "hemligt",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie:{
-//       secure:
-//     }
+//     secret: "hemligt", // Hemlig nyckel för att kryptera sessionsdata.
+//     resave: false, // Spara inte sessionen om den inte ändrats.
+//     saveUninitialized: true, // Skapa session även om inga data lagras.
+//     cookie: {
+//       secure: process.env.NODE_ENV === "production", // Använd säkra cookies i produktion.
+//     },
 //   })
 // );
 
+// Ställer in "trust proxy" för att stödja proxy-servrar
 app.set("trust proxy", 1);
-// Configure session and passport
-app.use(express.json());
+
+// Konfigurerar sessionshantering och Passport
+app.use(express.json()); // Aktiverar JSON-parsing för inkommande förfrågningar.
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "helloWorld",
-    resave: false,
-    saveUninitialized: false,
-    proxy: true,
+    secret: process.env.SESSION_SECRET || "helloWorld", // Hemlig nyckel för sessioner.
+    resave: false, // Spara inte sessioner om de inte ändras.
+    saveUninitialized: false, // Skapa inte onödiga sessioner.
+    proxy: true, // Använd proxy-stöd.
     cookie: {
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      secure: process.env.NODE_ENV === "production", // Endast säkra cookies i produktion.
+      maxAge: 24 * 60 * 60 * 1000, // Cookies är giltiga i 24 timmar.
     },
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-// app.use(cors())
+app.use(passport.initialize()); // Initierar Passport.
+app.use(passport.session()); // Binder Passport till sessionen.
 
-// ROUTES
-app.use(express.json());
-app.use("/campaign", campaignRoutes);
-app.use("/users", userRouter);
-app.use("/auth", authRouter);
+// Definierar API-rutter
+app.use("/campaign", campaignRoutes); // Rutter för kampanjer.
+app.use("/users", userRouter); // Rutter för användare.
+app.use("/auth", authRouter); // Rutter för autentisering.
 
+// Testroute för att kontrollera att servern fungerar
 app.get("/", (req, res) => {
   res.send("Hello from Backend  😊 ");
 });
 
-// const SERVER_PORT = process.env.SERVER_PORT || 1337;
-
-// app.listen(SERVER_PORT, () => {
-//   console.log("Server started on: " + SERVER_PORT);
-// });
-
+// Kontrollerar om servern körs på Vercel eller lokalt
 if (process.env.VERCEL !== "1") {
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3000; // Sätt port från miljövariabel eller standardport 3000.
   app.listen(PORT, () =>
     console.log(`Server running on port ${PORT}, Link => http://localhost:3000`)
   );
 }
 
+// Exporterar appen för att möjliggöra enhetstester eller integration i andra moduler
 export default app;

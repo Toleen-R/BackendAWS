@@ -1,45 +1,44 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Detta är din Prisma schema-fil, som definierar hur databasen ser ut och hur datamodellerna är relaterade till varandra.
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// Generator för Prisma-klienten, vilket innebär att en klient kommer att genereras för att interagera med databasen.
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" // Anger vilken klient som ska användas (Prisma Client JS).
 }
 
+// Definierar en källa för data (databasen).
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql" // Anger att PostgreSQL används som databas.
+  url      = env("DATABASE_URL") // Databasens URL hämtas från miljövariabeln DATABASE_URL.
 }
 
-// One to many relation
-
+// Modellen User definierar användarens data.
 model User {
-  id       String     @id @default(uuid())
-  name     String
-  email    String     @unique
-  password String
-  campaign Campaign[]
+  id       String     @id @default(uuid()) // Användarens unika ID, genereras automatiskt som ett UUID.
+  name     String     // Användarens namn.
+  email    String     @unique // Användarens e-postadress, måste vara unik.
+  password String     // Användarens lösenord.
+  campaign Campaign[] // En användare kan ha flera kampanjer (en-till-många relation).
 }
 
+// Modellen Campaign definierar kampanjens data.
 model Campaign {
-  id                 String  @id @default(uuid())
-  companyName        String
-  companyDescription String
-  productDescription String
-  targetAudience     String
-  createdAt          String
-  userId             String
-  user               User    @relation(fields: [userId], references: [id])
-  emails             Email[]
+  id                 String  @id @default(uuid()) // Kampanjens unika ID, genereras som ett UUID.
+  companyName        String  // Företagets namn.
+  companyDescription String  // Beskrivning av företaget.
+  productDescription String  // Beskrivning av produkten.
+  targetAudience     String  // Målgruppen för kampanjen.
+  createdAt          String  // Datum då kampanjen skapades.
+  userId             String  // Användarens ID som är kopplat till kampanjen (en-till-många relation).
+  user               User    @relation(fields: [userId], references: [id]) // Relationen till användaren (User).
+  emails             Email[] // Kampanjen kan ha flera e-postmeddelanden kopplade till sig (en-till-många relation).
 }
 
+// Modellen Email definierar e-postens data.
 model Email {
-  id         String   @id @default(uuid())
-  subject    String
-  content    String
-  campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
-  recipients String[]
+  id         String   @id @default(uuid()) // E-postens unika ID, genereras som ett UUID.
+  subject    String   // Ämnet för e-posten.
+  content    String   // Innehållet i e-posten.
+  campaignId String   // Kampanjens ID som e-posten tillhör (en-till-många relation).
+  campaign   Campaign @relation(fields: [campaignId], references: [id]) // Relationen till kampanjen (Campaign).
+  recipients String[] // En lista med mottagare för e-posten.
 }

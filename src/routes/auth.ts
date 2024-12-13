@@ -1,19 +1,20 @@
-import { Router } from "express";
-import passport from "passport";
-import "../authStrategies/githubStrategy.js";
-import "../authStrategies/localStrategy.js";
-import { Request, Response, NextFunction } from "express";
+import { Router } from "express"; // Importerar Router från Express för att hantera routes
+import passport from "passport"; // Importerar Passport för autentisering
+import "../authStrategies/githubStrategy.js"; // Importerar GitHub-strategi för Passport
+import "../authStrategies/localStrategy.js"; // Importerar lokal autentiseringsstrategi för Passport
+import { Request, Response, NextFunction } from "express"; // Importerar typer för typning av request och response
 
-const app = Router();
+const app = Router(); // Skapar en ny instans av en router
 
-app.get("/", passport.authenticate("github"));
+// Route för att starta autentisering med GitHub
+app.get("/", passport.authenticate("github")); // Initierar Passport GitHub-strategin
 
+// Route för att hantera GitHub-autentiseringens callback
 app.get(
   "/callback",
-  passport.authenticate("github", { failureRedirect: "/" }),
+  passport.authenticate("github", { failureRedirect: "/" }), // Hanterar GitHub-autentiseringens callback och omdirigerar vid fel
   function (req: Request, res: Response) {
-    // res.redirect('/profile');
-    // Indikerar att användaren är inloggad
+    // Om autentiseringen lyckas, omdirigera användaren till klienten med en query parameter
     res.redirect("http://localhost:5173/?loggedIn=true");
   }
 );
@@ -74,4 +75,5 @@ app.get("/logout", (req: Request, res: Response) => {
 });
 // ---------------------------------------------------------------------------
 
+// Exporterar router-objektet
 export default app;
